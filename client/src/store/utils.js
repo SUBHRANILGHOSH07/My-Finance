@@ -34,3 +34,5 @@ export const getDateSevenDaysAgo = () => {
 export const getAccessToken = () => {
   return localStorage.getItem("token");
 }
+
+export const baseURL = "https://my-finance-0ijw.onrender.com"

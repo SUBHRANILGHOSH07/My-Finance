@@ -10,6 +10,7 @@ import { MdOutlineWarning } from "react-icons/md";
 import Input from "./ui/Input";
 import { Button } from "./ui/Button";
 import { getAccessToken } from "../store/utils";
+import { baseURL } from "../store/utils";
 
 const AddTransaction = ({ isOpen, setIsOpen, refetch }) => {
   const { user } = useStore((state) => state);
@@ -39,7 +40,7 @@ const AddTransaction = ({ isOpen, setIsOpen, refetch }) => {
       };
 
       const { data: res } = await axios.post(
-        `http://127.0.0.1:8000/api-v1/transactions/add-transaction/${accountInfo._id}`,
+        `${baseURL}/api-v1/transactions/add-transaction/${accountInfo._id}`,
         newData,
         config
       );
@@ -83,7 +84,7 @@ const AddTransaction = ({ isOpen, setIsOpen, refetch }) => {
       };
 
       const { data: res } = await axios.get(
-        "http://127.0.0.1:8000/api-v1/account",
+        `${baseURL}/api-v1/account`,
         config
       );
       setAccountData(res?.data);

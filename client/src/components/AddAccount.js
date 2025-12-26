@@ -10,6 +10,8 @@ import { Button } from "./ui/Button";
 import { BiLoader } from "react-icons/bi";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { baseURL } from "../store/utils";
+
 
 const accounts = ["Cash", "Crypto", "PayPal", "Visa Debit Card"];
 
@@ -38,7 +40,7 @@ const AddAccount = ({ isOpen, setIsOpen, id, refetch, key }) => {
         },
       };
 
-      const URL = "http://127.0.0.1:8000/api-v1/account/create";
+      const URL = `${baseURL}/api-v1/account/create`;
 
       const { data: res } = await axios.post(URL, newData, config);
 

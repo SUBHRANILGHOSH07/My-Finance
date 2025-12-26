@@ -6,6 +6,7 @@ import { DialogPanel, DialogTitle, Input } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { Button } from "./ui/Button";
 import { getAccessToken } from "../store/utils";
+import { baseURL } from "../store/utils";
 
 const AddMoney = ({ isOpen, setIsOpen, id, refetch }) => {
   const {
@@ -25,7 +26,7 @@ const AddMoney = ({ isOpen, setIsOpen, id, refetch }) => {
         },
       };
 
-      const URL = `http://127.0.0.1:8000/api-v1/account/add-money/${id}`;
+      const URL = `${baseURL}/api-v1/account/add-money/${id}`;
 
       const { data: res } = await axios.put(URL, data, config);
 

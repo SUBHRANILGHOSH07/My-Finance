@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { getAccessToken } from "../store/utils";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { baseURL } from "../store/utils";
 
 const SettingsForm = () => {
   const { user,setUser } = useStore((state) => state);
@@ -30,7 +31,7 @@ const SettingsForm = () => {
           Authorization: `${getAccessToken()}`,
         },
       };
-      const URL = "http://127.0.0.1:8000/api-v1/user";
+      const URL = `${baseURL}/api-v1/user`;
 
       const { data: res } = await axios.put(URL, data, config);
 
