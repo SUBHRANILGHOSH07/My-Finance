@@ -11,7 +11,8 @@ import { RiProgress3Line } from "react-icons/ri";
 import { TiWarning } from "react-icons/ti";
 import ViewTransaction from "../components/ViewTransaction";
 import AddTransaction from "../components/AddTransaction";
-import { getAccessToken,baseURL } from "../store/utils";
+import { getAccessToken, baseURL } from "../store/utils";
+import { exportToExcel } from "react-json-to-excel";
 
 const Transactions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -100,7 +101,7 @@ const Transactions = () => {
               </button>
               <button
                 onClick={() => {
-                  // exportToExcel(data, `Transactions ${startDate}-${endDate}`) 
+                  exportToExcel(data, `Transactions ${startDate}-${endDate}`) 
                 }}
                 className="flex items-center gap-2 text-gray-700 dark:text-gray-400 hover:underline"
               >
