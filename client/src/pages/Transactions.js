@@ -12,7 +12,7 @@ import { TiWarning } from "react-icons/ti";
 import ViewTransaction from "../components/ViewTransaction";
 import AddTransaction from "../components/AddTransaction";
 import { getAccessToken, baseURL } from "../store/utils";
-import { exportToExcel } from "react-json-to-excel";
+import * as XLSX from "xlsx";
 
 const Transactions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,7 +48,7 @@ const Transactions = () => {
       console.log(error);
       toast.error(
         error?.response?.data?.message ||
-        "Something unexpected happened try again later!"
+          "Something unexpected happened try again later!"
       );
 
       if (error?.response?.data?.status === "auth_failed") {
@@ -78,6 +78,28 @@ const Transactions = () => {
     fetchTransactions();
   }, [startDate, endDate]);
 
+  const handleExport = () => {
+    const exportData = data.map((item) => ({
+      Date: new Date(item.createdAt).toLocaleDateString("en-US", {
+        dateStyle: "medium",
+      }),
+      Description: item.description,
+      Status: item.status,
+      Source: item.source,
+      Amount: Number(item.amount?.$numberDecimal || 0),
+      Type: item.type === "income" ? "Credit" : "Debit",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+
+    XLSX.writeFile(
+      workbook,
+      `Transactions_${startDate || "all"}-${endDate || "all"}.xlsx`
+    );
+  };
+
   return (
     <>
       {isLoading ? (
@@ -100,9 +122,7 @@ const Transactions = () => {
                 <span>Pay</span>
               </button>
               <button
-                onClick={() => {
-                  exportToExcel(data, `Transactions ${startDate}-${endDate}`) 
-                }}
+                  onClick={handleExport}
                 className="flex items-center gap-2 text-gray-700 dark:text-gray-400 hover:underline"
               >
                 Export <CiExport size={22} />
@@ -182,10 +202,11 @@ const Transactions = () => {
                       <td className="py-4 px-2">{item.source}</td>
                       <td className="py-4 px-2 text-black dark:text-gray-300 font-semibold">
                         <span
-                          className={`${item.type === "income"
-                            ? "text-emerald-600"
-                            : "text-red-600"
-                            } font-bold`}
+                          className={`${
+                            item.type === "income"
+                              ? "text-emerald-600"
+                              : "text-red-600"
+                          } font-bold`}
                         >
                           {item.type === "income" ? "+" : "-"}
                         </span>
